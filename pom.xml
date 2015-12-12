@@ -45,13 +45,24 @@
         <dependency>
             <groupId>com.mashape.unirest</groupId>
             <artifactId>unirest-java</artifactId>
-            <version>1.4.8-SNAPSHOT</version>
+            <version>1.4.7</version>
         </dependency>
         <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20151123</version>
+         </dependency>
+        <dependency>
+            <groupId>javax.naming</groupId>
+            <artifactId>jndi</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+
+<!--        <dependency>
             <groupId>android.paradise</groupId>
             <artifactId>android.json</artifactId>
             <version>6.0</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -66,7 +77,22 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
             <version>4.3.5</version>
+         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.3.2</version>
+         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore-nio</artifactId>
+            <version>4.3.2</version>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.6</version>
+         </dependency>
     </dependencies>
   
     <build>
@@ -131,16 +157,21 @@
                                     <pattern>org.apache.commons.codec</pattern>
                                     <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
                                 </relocation>
-                                <!--
                                 <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+
+<!--                                <relocation>
                                     <pattern>org.json</pattern>
                                     <shadedPattern>shaded.org.json</shadedPattern>
-                                </relocation>
-                                -->
+                                </relocation>-->
+                                <!--
                                 <relocation>
                                     <pattern>org.apache.commons.logging</pattern>
                                     <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
                                 </relocation>
+                                -->
                             </relocations>
                         </configuration>
                     </execution>
@@ -178,16 +209,20 @@
                                     <pattern>org.apache.commons.codec</pattern>
                                     <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
                                 </relocation>
-                                <!--
                                 <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+<!--                                <relocation>
                                     <pattern>org.json</pattern>
                                     <shadedPattern>shaded.org.json</shadedPattern>
-                                </relocation>
-                                -->
+                                </relocation>-->
+                                <!--
                                 <relocation>
                                     <pattern>org.apache.commons.logging</pattern>
                                     <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
                                 </relocation>
+                                -->
                             </relocations>
                         </configuration>
                     </execution>
@@ -225,20 +260,228 @@
                                     <pattern>org.apache.commons.codec</pattern>
                                     <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
                                 </relocation>
-                                <!--
                                 <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+<!--                                <relocation>
                                     <pattern>org.json</pattern>
                                     <shadedPattern>shaded.org.json</shadedPattern>
-                                </relocation>
-                                -->
+                                </relocation>-->
+                                <!--
                                 <relocation>
                                     <pattern>org.apache.commons.logging</pattern>
                                     <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
                                 </relocation>
+                                -->
                             </relocations>
                         </configuration>
                     </execution>
                     <execution>
+                        <id>commons-codec</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!--<finalName>android.paradise-httpmime</finalName>-->
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <!--<shadedArtifactId>httpcore-nio</shadedArtifactId>-->
+                            <shadedClassifierName>commons-codec</shadedClassifierName>
+                            <artifactSet>
+                                <includes>
+                                    <include>commons-codec:commons-codec</include>
+                                    <!--
+                                    <include>org.apache.httpcomponents:httpcore</include>
+                                    <include>org.apache.httpcomponents:httpcore-nio</include>
+                                    <include>org.apache.httpcomponents:httpasyncclient</include>
+                                    <include>org.apache.httpcomponents:httpmime</include>
+                                    <include>org.json:json</include>
+                                    <include>commons-logging:commons-logging</include>
+                                    <include>commons-codec:commons-codec</include>
+                                    -->
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>shaded.org.apache.http</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+<!--                                <relocation>
+                                    <pattern>org.json</pattern>
+                                    <shadedPattern>shaded.org.json</shadedPattern>
+                                </relocation>-->
+                                <!--
+                                <relocation>
+                                    <pattern>org.apache.commons.logging</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
+                                </relocation>
+                                -->
+                            </relocations>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>httpcore</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!--<finalName>android.paradise-httpmime</finalName>-->
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <!--<shadedArtifactId>httpcore-nio</shadedArtifactId>-->
+                            <shadedClassifierName>httpcore</shadedClassifierName>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.apache.httpcomponents:httpcore</include>
+                                    <!--
+                                    <include>org.apache.httpcomponents:httpcore</include>
+                                    <include>org.apache.httpcomponents:httpcore-nio</include>
+                                    <include>org.apache.httpcomponents:httpasyncclient</include>
+                                    <include>org.apache.httpcomponents:httpmime</include>
+                                    <include>org.json:json</include>
+                                    <include>commons-logging:commons-logging</include>
+                                    <include>commons-codec:commons-codec</include>
+                                    -->
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>shaded.org.apache.http</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+<!--                                <relocation>
+                                    <pattern>org.json</pattern>
+                                    <shadedPattern>shaded.org.json</shadedPattern>
+                                </relocation>-->
+                                <!--
+                                <relocation>
+                                    <pattern>org.apache.commons.logging</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
+                                </relocation>
+                                -->
+                            </relocations>
+                        </configuration>
+                    </execution>
+                     <execution>
+                        <id>httpcore-nio</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!--<finalName>android.paradise-httpmime</finalName>-->
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <!--<shadedArtifactId>httpcore-nio</shadedArtifactId>-->
+                            <shadedClassifierName>httpcore-nio</shadedClassifierName>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.apache.httpcomponents:httpcore-nio</include>
+                                    <!--
+                                    <include>org.apache.httpcomponents:httpcore</include>
+                                    <include>org.apache.httpcomponents:httpcore-nio</include>
+                                    <include>org.apache.httpcomponents:httpasyncclient</include>
+                                    <include>org.apache.httpcomponents:httpmime</include>
+                                    <include>org.json:json</include>
+                                    <include>commons-logging:commons-logging</include>
+                                    <include>commons-codec:commons-codec</include>
+                                    -->
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>shaded.org.apache.http</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+<!--                                <relocation>
+                                    <pattern>org.json</pattern>
+                                    <shadedPattern>shaded.org.json</shadedPattern>
+                                </relocation>-->
+                                <!--
+                                <relocation>
+                                    <pattern>org.apache.commons.logging</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
+                                </relocation>
+                                -->
+                            </relocations>
+                        </configuration>
+                    </execution>
+                     <execution>
+                        <id>json</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!--<finalName>android.paradise-httpmime</finalName>-->
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <!--<shadedArtifactId>httpcore-nio</shadedArtifactId>-->
+                            <shadedClassifierName>json</shadedClassifierName>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.json:json</include>
+                                    <!--
+                                    <include>org.apache.httpcomponents:httpcore</include>
+                                    <include>org.apache.httpcomponents:httpcore-nio</include>
+                                    <include>org.apache.httpcomponents:httpasyncclient</include>
+                                    <include>org.apache.httpcomponents:httpmime</include>
+                                    <include>org.json:json</include>
+                                    <include>commons-logging:commons-logging</include>
+                                    <include>commons-codec:commons-codec</include>
+                                    -->
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>shaded.org.apache.http</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+<!--                                <relocation>
+                                    <pattern>org.json</pattern>
+                                    <shadedPattern>shaded.org.json</shadedPattern>
+                                </relocation>-->
+                                <!--
+                                <relocation>
+                                    <pattern>org.apache.commons.logging</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
+                                </relocation>
+                                -->
+                            </relocations>
+                        </configuration>
+                    </execution>
+                   <execution>
                         <id>unirest-java</id>
                         <phase>package</phase>
                         <goals>
@@ -272,16 +515,71 @@
                                     <pattern>org.apache.commons.codec</pattern>
                                     <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
                                 </relocation>
-                                <!--
                                 <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+<!--                                <relocation>
                                     <pattern>org.json</pattern>
                                     <shadedPattern>shaded.org.json</shadedPattern>
-                                </relocation>
-                                -->
+                                </relocation>-->
+                                <!--
                                 <relocation>
                                     <pattern>org.apache.commons.logging</pattern>
                                     <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
                                 </relocation>
+                                -->
+                            </relocations>
+                        </configuration>
+                    </execution>
+                   <execution>
+                        <id>javax.naming</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!--<finalName>android.paradise-httpmime</finalName>-->
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <!--<shadedArtifactId>httpcore-nio</shadedArtifactId>-->
+                            <shadedClassifierName>jndi</shadedClassifierName>
+                            <artifactSet>
+                                <includes>
+                                    <include>javax.naming:jndi</include>
+                                    <!--
+                                    <include>org.apache.httpcomponents:httpcore</include>
+                                    <include>org.apache.httpcomponents:httpcore-nio</include>
+                                    <include>org.apache.httpcomponents:httpasyncclient</include>
+                                    <include>org.apache.httpcomponents:httpmime</include>
+                                    <include>org.json:json</include>
+                                    <include>commons-logging:commons-logging</include>
+                                    <include>commons-codec:commons-codec</include>
+                                    -->
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>shaded.org.apache.http</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+<!--                                <relocation>
+                                    <pattern>org.json</pattern>
+                                    <shadedPattern>shaded.org.json</shadedPattern>
+                                </relocation>-->
+                                <!--
+                                <relocation>
+                                    <pattern>org.apache.commons.logging</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.logging</shadedPattern>
+                                </relocation>
+                                -->
                             </relocations>
                         </configuration>
                     </execution>
