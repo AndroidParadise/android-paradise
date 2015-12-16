@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <groupId>android-paradise</groupId>
-  <artifactId>android.paradise</artifactId>
-  <version>1.0</version>
+    <parent>
+        <groupId>android-paradise</groupId>
+        <artifactId>android.paradise</artifactId>
+        <version>1.0</version>
+    </parent>
+    <groupId>javax.naming</groupId>
+    <artifactId>jndi-android-paradise</artifactId>
+    <version>1.4.7</version>
   <modelVersion>4.0.0</modelVersion>
-  <name>Android Paradise Meta Project</name>
-  <description>Android Paradise Foundation is helping resolving android jar hell problem</description>
-  <url>https://github.com/AndroidParadise</url>
-  <inceptionYear>2015</inceptionYear>
-  <packaging>pom</packaging>
+  <packaging>jar</packaging>
 
   <organization>
     <name>The Android Paradise Foundation</name>
@@ -23,92 +24,83 @@
     </license>
   </licenses>
 
-<!--
-  <issueManagement>
-    <system>Jira</system>
-    <url>http://issues.apache.org/jira/browse/HTTPCLIENT</url>
-  </issueManagement>
-
-      <scm>
-        <connection>scm:svn:https://svn.apache.org/repos/asf/httpcomponents/httpclient/tags/4.3.5</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/httpcomponents/httpclient/tags/4.3.5</developerConnection>
-        <url>https://svn.apache.org/repos/asf/httpcomponents/httpclient/tags/4.3.5</url>
-      </scm>
-    -->
-
     <properties>
         <maven.compiler.source>1.5</maven.compiler.source>
         <maven.compiler.target>1.5</maven.compiler.target>
     </properties>
 
-    <dependencyManagement>
-      <dependencies>
-        <dependency>
-            <groupId>com.mashape.unirest</groupId>
-            <artifactId>unirest-java</artifactId>
-            <version>1.4.7</version>
-        </dependency>
-        <dependency>
-                <groupId>org.json</groupId>
-                <artifactId>json</artifactId>
-                <version>20151123</version>
-         </dependency>
+    <dependencies>
         <dependency>
             <groupId>javax.naming</groupId>
             <artifactId>jndi</artifactId>
             <version>1.6.0</version>
         </dependency>
+   </dependencies>
 
-<!--        <dependency>
-            <groupId>android.paradise</groupId>
-            <artifactId>android.json</artifactId>
-            <version>6.0</version>
-        </dependency>-->
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.3.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpasyncclient</artifactId>
-            <version>4.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.3.5</version>
-         </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.3.2</version>
-         </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore-nio</artifactId>
-            <version>4.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.6</version>
-         </dependency>
-    </dependencies>
-    </dependencyManagement>
-  
-  <modules>
-      <module>unirest-java</module>
-      <module>json</module>
-      <module>jndi</module>
-      <module>httpclient</module>
-      <module>httpasyncclient</module>
-      <module>httpmime</module>
-      <module>httpcore</module>
-      <module>httpcore-nio</module>
-      <module>commons-codec</module>
-  </modules>
-  
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.3.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <DependencyConvergence/>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>              
+            </plugin>
+            
+            
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.2</version>
+                <executions>
+                    <execution>
+                        <id>jndi</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <!--<shadedClassifierName>android-paradise</shadedClassifierName>-->
+                            <artifactSet>
+                                <includes>
+                                    <include>javax.naming:jndi</include>
+                                </includes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>shaded.org.apache.http</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons.codec</pattern>
+                                    <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.naming</pattern>
+                                    <shadedPattern>shaded.javax.naming</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
   <!--
     <build>
         <plugins>
@@ -329,36 +321,6 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.json:json</include>
-                                </includes>
-                            </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.apache.http</pattern>
-                                    <shadedPattern>shaded.org.apache.http</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.apache.commons.codec</pattern>
-                                    <shadedPattern>shaded.org.apache.commons.codec</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>javax.naming</pattern>
-                                    <shadedPattern>shaded.javax.naming</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                   <execution>
-                        <id>unirest-java</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>unirest-java</shadedClassifierName>
-                            <artifactSet>
-                                <includes>
-                                    <include>com.mashape.unirest:unirest-java</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
